@@ -279,27 +279,68 @@ POST /api/user           - Update user profile
 
 ### Backend Configuration
 
-Key settings in `application.yml`:
+All main settings are in `backend/src/main/resources/application.yml` and can be overridden with environment variables. Example structure:
 
 ```yaml
+spring:
+  application:
+    name: market
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:${DATASOURCE_PORT:5432}/${DATASOURCE_DB:market}}
+    username: ${DATASOURCE_USERNAME:user}
+    password: ${DATASOURCE_PASSWORD:pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
 app:
-  cors:
-    allowed-origins: http://localhost:5173
+  server:
+    url: ${SERVER_URL:http://localhost:8080}
+    frontend:
+      url: ${FRONTEND_URL:http://localhost:5173}
   token:
-    secret: your-jwt-secret
+    secret: ${SAFEKAB_TOKEN_SECRET:your-jwt-secret}
+    issuer: ${SAFEKAB_TOKEN_ISSUER:safekab}
+    tokenType: ${TOKEN_TYPE:JWT}
+    accessExpiration: 900000
+    refreshExpiration: 604800000
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5173}
   payment:
-    provider: stripe
+    provider: ${PAYMENT_PROVIDER:stripe}
     api:
-      key: your-stripe-key
+      key: ${STRIPE_API_KEY:sk_test_test}
+    webhook:
+      secret: ${STRIPE_WEBHOOK_SECRET:whsec_test}
+    currency: ${CURRENCY:gbp}
 ```
+
+**Environment variables you can set:**
+
+- `DATASOURCE_URL`, `DATASOURCE_PORT`, `DATASOURCE_DB`, `DATASOURCE_USERNAME`, `DATASOURCE_PASSWORD`
+- `SERVER_URL`, `FRONTEND_URL`
+- `SAFEKAB_TOKEN_SECRET`, `SAFEKAB_TOKEN_ISSUER`, `TOKEN_TYPE`
+- `ALLOWED_ORIGINS`
+- `PAYMENT_PROVIDER`, `STRIPE_API_KEY`, `STRIPE_WEBHOOK_SECRET`, `CURRENCY`
+
+You can use a `.env` file or set these in your deployment environment.
 
 ### Frontend Configuration
 
-API base URL is configured in `src/services/api.ts`:
+- The API base URL is set in `frontend/src/services/api.ts`:
 
-```typescript
-const API_BASE_URL = "http://localhost:8080/api";
-```
+  ```typescript
+  const API_BASE_URL = "http://localhost:8080/api";
+  ```
+
+- For production, update this value or use environment variables (e.g., `.env` or `import.meta.env`) as needed for deployment.
 
 **Backend**:
 
@@ -346,7 +387,3 @@ SAFEKAB_TOKEN_SECRET=your-jwt-secret
 ### Frontend
 
 Set production API URL in build configuration
-
-# safekab-market
-
-# safekab-market
