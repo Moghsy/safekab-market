@@ -1,45 +1,162 @@
 # SafeKab Marketplace
 
-A full-stack marketplace application where you can sell products to customers. Built with Spring Boot backend and React frontend.
+A full-stack e-commerce marketplace with a Spring Boot backend and a modern React (TypeScript, Vite) frontend.
 
-## Project Overview
+---
 
-This is a complete e-commerce solution consisting of:
+## Project Structure
 
-- **Backend**: Spring Boot REST API with JWT authentication, Stripe payments, and PostgreSQL database
-- **Frontend**: Modern React application with TypeScript, Tailwind CSS, and responsive design
+### Backend (`/backend`)
 
-## Features
+- **Spring Boot REST API**
+- JWT authentication & refresh tokens
+- Stripe payment integration
+- PostgreSQL database
+- Modular structure:
+  - `config/` – Security, payment, and role configuration
+  - `controller/` – REST endpoints for auth, products, users, cart, orders, payments
+  - `dto/` – Data transfer objects for API requests/responses
+  - `entity/` – JPA entities (User, Product, Order, etc.)
+  - `exception/` – Global exception handling
+  - `middleware/` – JWT authentication filter
+  - `repository/` – Spring Data JPA repositories
+  - `service/` – Business logic for all modules
+  - `token/` – JWT and refresh token utilities
+  - `resources/` – `application.yml`, static assets, templates
+  - `docker-compose.yml` – For local development with PostgreSQL
+  - `pom.xml` – Maven build config
+
+### Frontend (`/frontend`)
+
+- **React + TypeScript + Vite**
+- Tailwind CSS for styling
+- Modular structure:
+  - `src/components/` – UI components (buttons, cards, dialogs, etc.) and admin dashboard components
+  - `src/pages/` – Main app pages (Home, Products, Cart, Checkout, Admin, etc.)
+  - `src/context/` – React context for Auth, Cart, Config, Toast
+  - `src/hooks/` – Custom hooks (API, VAT, click outside, etc.)
+  - `src/models/` – TypeScript models for app data
+  - `src/services/` – API and error handling utilities
+  - `public/` – Static assets (logos, images)
+  - `package.json` – Frontend dependencies and scripts
+
+---
+
+## Key Features
 
 ### 🛍️ Customer Experience
-- Browse products with detailed information
-- Secure user registration and authentication
-- Shopping cart management
-- Checkout process with address collection
+
+- Browse products with details and images
+- Secure registration, login, and profile management
+- Shopping cart and checkout with address collection
 - Stripe payment integration
-- User profile management
 
 ### 👨‍💼 Admin Features
-- Product inventory management
-- Add/edit products with images
+
+- Product inventory management (add/edit/delete)
 - Stock level tracking
-- Admin dashboard overview
+- Order management
+- Admin dashboard
 
 ### 🔒 Security & Authentication
+
 - JWT-based authentication with refresh tokens
 - Role-based access control (USER/ADMIN)
 - Secure API endpoints
-- CORS configuration
 
 ### 💳 Payment Processing
+
 - Stripe checkout integration
 - Secure payment processing
+
+---
+
+## Getting Started
+
+### Backend
+
+1. `cd backend`
+2. Copy `application.yml` and configure your database/Stripe keys
+3. Run with Maven:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+4. Or use Docker Compose:
+   ```bash
+   docker-compose up --build
+   ```
+
+### Frontend
+
+1. `cd frontend`
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## Directory Overview
+
+### Backend
+
+```
+backend/
+  docker-compose.yml
+  pom.xml
+  src/
+    main/java/com/safekab/market/
+      config/         # Security, payment, role config
+      controller/     # REST controllers (auth, product, user, cart, order, payment)
+      dto/            # Data transfer objects
+      entity/         # JPA entities
+      exception/      # Exception handling
+      middleware/     # JWT filter
+      repository/     # JPA repositories
+      service/        # Business logic
+      token/          # JWT utilities
+    resources/
+      application.yml
+      static/images/
+      templates/
+```
+
+### Frontend
+
+```
+frontend/
+  package.json
+  vite.config.ts
+  src/
+    components/
+      admin/          # Admin dashboard components
+      ui/             # Reusable UI components
+    context/          # React context providers
+    hooks/            # Custom hooks
+    models/           # TypeScript models
+    pages/            # App pages
+    services/         # API and error utils
+    assets/           # Images, logos
+  public/             # Static assets
+```
+
+---
+
+## License
+
+MIT
+
 - Order status tracking
 - Payment webhook handling
 
 ## Tech Stack
 
 ### Backend
+
 - **Framework**: Spring Boot 3
 - **Database**: PostgreSQL with JPA/Hibernate
 - **Security**: Spring Security with JWT
@@ -48,11 +165,12 @@ This is a complete e-commerce solution consisting of:
 - **Java**: 21
 
 ### Frontend
+
 - **Framework**: React 19 with TypeScript
 - **Styling**: Tailwind CSS
 - **Build**: Vite
 - **Routing**: React Router DOM
-- **HTTP**: Axios
+- **HTTP**: Fetch API
 - **State**: React Context API
 
 ## Project Structure
@@ -86,33 +204,40 @@ v3_safekab_button/
 ## Quick Start
 
 ### Prerequisites
+
 - Java 21
 - Node.js 18+
 - PostgreSQL (via Docker)
 - Stripe account for payments
 
 ### 1. Database Setup
+
 ```bash
 cd backend
 docker-compose up -d
 ```
 
 ### 2. Backend Setup
+
 ```bash
 cd backend
 ./mvnw spring-boot:run
 ```
+
 Backend will start on: http://localhost:8080
 
 ### 3. Frontend Setup
+
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+
 Frontend will start on: http://localhost:5173
 
 ### 4. Access the Application
+
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:8080/api
 - **Database**: PostgreSQL on port 5432
@@ -120,6 +245,7 @@ Frontend will start on: http://localhost:5173
 ## API Documentation
 
 ### Authentication Endpoints
+
 ```
 POST /api/auth/login      - User login
 POST /api/auth/register   - User registration
@@ -127,6 +253,7 @@ POST /api/auth/refresh    - Token refresh
 ```
 
 ### Product Endpoints
+
 ```
 GET    /api/products           - Get all products (public)
 POST   /api/admin/products     - Create product (admin)
@@ -134,6 +261,7 @@ PATCH  /api/admin/products     - Update product (admin)
 ```
 
 ### Cart & Orders
+
 ```
 POST /api/cart/add        - Add to cart
 POST /api/orders          - Create order
@@ -141,6 +269,7 @@ POST /api/payment/create  - Create payment
 ```
 
 ### User Management
+
 ```
 GET  /api/user           - Get user profile
 POST /api/user           - Update user profile
@@ -149,7 +278,9 @@ POST /api/user           - Update user profile
 ## Configuration
 
 ### Backend Configuration
+
 Key settings in `application.yml`:
+
 ```yaml
 app:
   cors:
@@ -163,38 +294,22 @@ app:
 ```
 
 ### Frontend Configuration
+
 API base URL is configured in `src/services/api.ts`:
+
 ```typescript
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = "http://localhost:8080/api";
 ```
 
-## Development Workflow
-
-### Adding New Features
-
-1. **Backend Changes**:
-   - Create/update entities in `entity/`
-   - Add DTOs in `dto/`
-   - Implement business logic in `service/`
-   - Create REST endpoints in `controller/`
-   - Add tests
-
-2. **Frontend Changes**:
-   - Define TypeScript types in `types/`
-   - Create API service functions in `services/`
-   - Build React components in `components/`
-   - Add routing if needed
-   - Update contexts for state management
-
-### Testing
-
 **Backend**:
+
 ```bash
 cd backend
 ./mvnw test
 ```
 
 **Frontend**:
+
 ```bash
 cd frontend
 npm run build  # Check for build errors
@@ -204,12 +319,14 @@ npm run lint   # Check code style
 ## Deployment
 
 ### Backend Deployment
+
 1. Build the JAR file: `./mvnw clean package`
 2. Deploy to your server with Java 21
 3. Configure database connection
 4. Set up environment variables for Stripe
 
 ### Frontend Deployment
+
 1. Build the app: `npm run build`
 2. Serve the `dist/` folder with a web server
 3. Configure API base URL for production
@@ -217,6 +334,7 @@ npm run lint   # Check code style
 ## Environment Variables
 
 ### Backend (.env)
+
 ```
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/safekab_market
 SPRING_DATASOURCE_USERNAME=safekab_user
@@ -226,44 +344,9 @@ SAFEKAB_TOKEN_SECRET=your-jwt-secret
 ```
 
 ### Frontend
+
 Set production API URL in build configuration
 
-## Troubleshooting
-
-### Common Issues
-
-1. **CORS Errors**: Check `allowed-origins` in backend config
-2. **Authentication**: Verify JWT secret and token expiration
-3. **Database**: Ensure PostgreSQL is running and accessible
-4. **Payments**: Confirm Stripe keys and webhook configuration
-5. **Build Errors**: Check Node.js and Java versions
-
-### Getting Help
-
-1. Check the logs for detailed error messages
-2. Verify all environment variables are set
-3. Ensure database migrations have run
-4. Test API endpoints with Postman/curl
-5. Use browser dev tools for frontend debugging
-
-## Features to Add
-
-- [ ] Order history and tracking
-- [ ] Email notifications
-- [ ] Product categories and search
-- [ ] Product reviews and ratings
-- [ ] Inventory alerts
-- [ ] Advanced admin analytics
-- [ ] Mobile app support
-- [ ] Multi-vendor support
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
 # safekab-market
+
 # safekab-market
