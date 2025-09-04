@@ -1,0 +1,44 @@
+# Conversion to YAML from Properties format report
+spring:
+  application:
+    name: market
+
+  # DataSource configured from environment variables with sensible defaults.
+  # You can override by setting SPRING_DATASOURCE_URL / SPRING_DATASOURCE_USERNAME / SPRING_DATASOURCE_PASSWORD
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:${DATASOURCE_PORT:5432}/${DATASOURCE_DB:market}}
+    username: ${DATASOURCE_USERNAME:user}
+    password: ${DATASOURCE_PASSWORD:pass}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update # use 'validate' or remove in prod
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    properties:
+      hibernate:
+        "format_sql": true
+
+app:
+  server:
+    url: ${SERVER_URL:http://localhost:8080}
+    frontend:
+      url: ${FRONTEND_URL:http://localhost:5173}
+  token:
+    secret: ${SAFEKAB_TOKEN_SECRET:f14a55efdf787456b51ba22ba29338536a28ec25980d3b447e74d0a81cf60b6a}
+    issuer: ${SAFEKAB_TOKEN_ISSUER:safekab}
+    tokenType: ${TOKEN_TYPE:JWT}
+    accessExpiration: 900000
+    refreshExpiration: 604800000
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5173}
+  payment:
+    provider: ${PAYMENT_PROVIDER:stripe}
+    api:
+      key: ${STRIPE_API_KEY:sk_test_test}
+    webhook:
+      secret: ${STRIPE_WEBHOOK_SECRET:whsec_test}
+    currency: ${CURRENCY:gbp}
