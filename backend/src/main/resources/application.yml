@@ -1,10 +1,10 @@
+# spring.config.import=optional:file:.env[.properties]
 # Conversion to YAML from Properties format report
 spring:
   application:
     name: market
 
   # DataSource configured from environment variables with sensible defaults.
-  # You can override by setting SPRING_DATASOURCE_URL / SPRING_DATASOURCE_USERNAME / SPRING_DATASOURCE_PASSWORD
   datasource:
     url: ${DATASOURCE_URL:jdbc:postgresql://localhost:${DATASOURCE_PORT:5432}/${DATASOURCE_DB:market}}
     username: ${DATASOURCE_USERNAME:user}
@@ -41,4 +41,4 @@ app:
       key: ${STRIPE_API_KEY:sk_test_test}
     webhook:
       secret: ${STRIPE_WEBHOOK_SECRET:whsec_test}
-    currency: ${CURRENCY:gbp}
+    currency: ${PAYMENT_CURRENCY:gbp}

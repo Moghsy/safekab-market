@@ -319,7 +319,7 @@ app:
       key: ${STRIPE_API_KEY:sk_test_test}
     webhook:
       secret: ${STRIPE_WEBHOOK_SECRET:whsec_test}
-    currency: ${CURRENCY:gbp}
+    currency: gbp
 ```
 
 **Environment variables you can set:**
