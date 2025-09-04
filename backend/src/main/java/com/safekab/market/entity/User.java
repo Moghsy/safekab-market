@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.safekab.market.entity.cart.Cart;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,9 +56,9 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    // @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    // @JsonIgnore
-    // private Cart cart;
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Cart cart;
 
     // compatibility helper returning role names used by token builder
     public List<RoleName> getRoleNames() {
